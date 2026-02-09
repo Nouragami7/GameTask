@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.game.presentation.gamedetails.screen.GameDetailsScreen
 import com.example.game.presentation.gameslist.screen.GamesListScreen
+import com.example.game.presentation.splash.SplashScreen
 import com.example.game.utils.NetworkObserver
 
 @Composable
@@ -16,8 +17,18 @@ fun NavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = ScreensRoute.GamesListScreen
+        startDestination = ScreensRoute.SplashScreen
     ) {
+        composable<ScreensRoute.SplashScreen> {
+            SplashScreen(
+                onSplashFinished = {
+                    navController.navigate(ScreensRoute.GamesListScreen) {
+                        popUpTo(ScreensRoute.SplashScreen) { inclusive = true }
+                    }
+                }
+            )
+        }
+
         composable<ScreensRoute.GamesListScreen> {
             GamesListScreen(
                 onGameClick = { gameId ->

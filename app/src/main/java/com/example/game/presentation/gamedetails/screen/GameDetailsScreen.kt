@@ -70,7 +70,7 @@ fun GameDetailsScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isOnline by networkObserver.isOnline.collectAsState(initial = true)
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background) ) {
 
         when {
             uiState.isLoading -> {

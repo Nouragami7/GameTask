@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.game.R
 import com.example.game.domain.model.Game
@@ -65,8 +66,8 @@ fun GameCard(
                     )
                     Text(
                         text = stringResource(R.string.game_rating_format, game.rating),
-                        style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
+                        fontSize = 16.sp,
                         color = MaterialTheme.colorScheme.tertiary
                     )
 

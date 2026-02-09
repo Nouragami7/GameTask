@@ -1,5 +1,7 @@
 package com.example.game.data.remote.dto
 
+import com.google.gson.annotations.SerializedName
+
 data class TrailersResponseDto(
     val count: Int,
     val results: List<TrailerDto>
@@ -13,5 +15,6 @@ data class TrailerDto(
 
 data class TrailerDataDto(
     val max: String?,
-    val `480`: String?
+    @SerializedName("480")
+    val lowQuality: String?
 )

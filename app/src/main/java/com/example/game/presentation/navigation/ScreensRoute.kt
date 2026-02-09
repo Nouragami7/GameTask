@@ -6,6 +6,8 @@ import kotlinx.serialization.Serializable
 sealed class ScreensRoute {
 
     @Serializable
+    data object SplashScreen : ScreensRoute()
+    @Serializable
     data object GamesListScreen : ScreensRoute()
 
     @Serializable

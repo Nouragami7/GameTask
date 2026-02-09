@@ -79,21 +79,4 @@ class GamesRepositoryImpl @Inject constructor(
             }
         }
     }
-    override suspend fun getGameScreenshots(gameId: Int): Result<List<String>> {
-        return try {
-            val response = api.getGameScreenshots(gameId)
-            Result.success(response.results.map { it.image })
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun getGameTrailers(gameId: Int): Result<String?> {
-        return try {
-            val response = api.getGameTrailers(gameId)
-            Result.success(response.results.firstOrNull()?.data?.max)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
 }
