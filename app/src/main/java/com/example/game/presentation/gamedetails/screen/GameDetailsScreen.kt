@@ -3,7 +3,18 @@ package com.example.game.presentation.gamedetails.screen
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -15,8 +26,20 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,44 +56,61 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.example.game.R
 import com.example.game.domain.model.GameDetails
+import com.example.game.presentation.components.NetworkBanner
 import com.example.game.presentation.gamedetails.viewmodel.GameDetailsViewModel
 import com.example.game.presentation.gameslist.components.ErrorView
+import com.example.game.utils.NetworkObserver
 
 @Composable
 fun GameDetailsScreen(
     onBack: () -> Unit,
+    networkObserver: NetworkObserver,
     viewModel: GameDetailsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val isOnline by networkObserver.isOnline.collectAsState(initial = true)
 
-    when {
-        uiState.isLoading -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+    Box(modifier = Modifier.fillMaxSize()) {
+
+        when {
+            uiState.isLoading -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            }
+
+            uiState.error != null -> {
+                uiState.error?.let { error ->
+                    ErrorView(
+                        message = error,
+                        onRetry = viewModel::retry,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
+
+            uiState.gameDetails != null -> {
+                uiState.gameDetails?.let { details ->
+                    GameDetailsContent(
+                        game = details,
+                        onBack = onBack
+                    )
+                }
             }
         }
 
-        uiState.error != null -> {
-            ErrorView(
-                message = uiState.error!!,
-                onRetry = viewModel::retry,
-                modifier = Modifier.fillMaxSize()
-            )
-        }
-
-        uiState.gameDetails != null -> {
-            GameDetailsContent(
-                game = uiState.gameDetails!!,
-                onBack = onBack
-            )
-        }
+        NetworkBanner(
+            isOnline = isOnline,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 30.dp)
+        )
     }
 }
 
 @Composable
 private fun GameDetailsContent(
-    game: GameDetails,
-    onBack: () -> Unit
+    game: GameDetails, onBack: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -91,16 +131,13 @@ private fun GameDetailsContent(
                         .background(
                             Brush.verticalGradient(
                                 colors = listOf(
-                                    Color.Transparent,
-                                    MaterialTheme.colorScheme.background
-                                ),
-                                startY = 150f
+                                    Color.Transparent, MaterialTheme.colorScheme.background
+                                ), startY = 150f
                             )
                         )
                 )
                 IconButton(
-                    onClick = onBack,
-                    modifier = Modifier
+                    onClick = onBack, modifier = Modifier
                         .padding(16.dp)
                         .align(Alignment.TopStart)
                 ) {
@@ -195,10 +232,7 @@ private fun GameDetailsContent(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 game.genres.forEach { genre ->
-                    AssistChip(
-                        onClick = {},
-                        label = { Text(genre) }
-                    )
+                    AssistChip(onClick = {}, label = { Text(genre) })
                 }
             }
         }
@@ -222,8 +256,7 @@ private fun GameDetailsContent(
                     overflow = TextOverflow.Ellipsis
                 )
                 TextButton(
-                    onClick = { isExpanded = !isExpanded },
-                    modifier = Modifier.align(Alignment.End)
+                    onClick = { isExpanded = !isExpanded }, modifier = Modifier.align(Alignment.End)
                 ) {
                     Text(
                         text = stringResource(
@@ -232,10 +265,8 @@ private fun GameDetailsContent(
                         )
                     )
                     Icon(
-                        imageVector = if (isExpanded)
-                            Icons.Default.KeyboardArrowUp
-                        else
-                            Icons.Default.KeyboardArrowDown,
+                        imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp
+                        else Icons.Default.KeyboardArrowDown,
                         contentDescription = null,
                         modifier = Modifier.size(18.dp)
                     )
@@ -259,9 +290,7 @@ private fun GameDetailsContent(
                         onClick = {
                             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(trailerUrl))
                             context.startActivity(intent)
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = MaterialTheme.shapes.medium
+                        }, modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium
                     ) {
                         Box(
                             modifier = Modifier

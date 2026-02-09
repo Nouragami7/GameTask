@@ -52,4 +52,6 @@
     <string name="no_trailer">No trailer available</string>
     <string name="action_show_more">Show more</string>
     <string name="action_show_less">Show less</string>
+    <string name="offline_mode">You\'re offline — showing cached data</string>
+    <string name="back_online">Back online</string>
 </resources>

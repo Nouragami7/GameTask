@@ -49,3 +49,5 @@ val LightOnSurface = Color(0xFF1C1B1F)
 val LightSurfaceVariant = Color(0xFFE7E0EC)
 val LightOnSurfaceVariant = Color(0xFF49454F)
 val LightError = Color(0xFFBA1A1A)
+
+val GreenOnline = Color(0xFF4CAF50)

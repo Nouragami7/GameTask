@@ -16,18 +16,22 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.game.R
+import com.example.game.presentation.components.NetworkBanner
 import com.example.game.presentation.gameslist.viewmodel.GamesListViewModel
 import com.example.game.presentation.gameslist.components.*
+import com.example.game.utils.NetworkObserver
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GamesListScreen(
     onGameClick: (Int) -> Unit,
+    networkObserver: NetworkObserver,
     viewModel: GamesListViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val isOnline by networkObserver.isOnline.collectAsState(initial = true)
 
     LaunchedEffect(listState) {
         snapshotFlow {
@@ -63,6 +67,8 @@ fun GamesListScreen(
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
+
+            NetworkBanner(isOnline = isOnline)
 
             GamesSearchBar(
                 query = uiState.searchQuery,
