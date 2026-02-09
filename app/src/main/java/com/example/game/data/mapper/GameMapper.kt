@@ -1,6 +1,8 @@
 package com.example.game.data.mapper
 
+import com.example.game.data.local.entity.GameDetailsEntity
 import com.example.game.data.local.entity.GameEntity
+import com.example.game.data.local.entity.GenreEntity
 import com.example.game.data.remote.dto.GameDetailsDto
 import com.example.game.data.remote.dto.GameDto
 import com.example.game.data.remote.dto.GenreDto
@@ -59,4 +61,44 @@ fun GameEntity.toDomain() = Game(
     rating = rating,
     releaseDate = releaseDate,
     genres = genres.split(",").filter { it.isNotBlank() }
+)
+
+fun Genre.toEntity(): GenreEntity = GenreEntity(
+    id = id,
+    name = name,
+    slug = slug,
+    imageUrl = imageUrl
+)
+
+fun GenreEntity.toDomain(): Genre = Genre(
+    id = id,
+    name = name,
+    slug = slug,
+    imageUrl = imageUrl
+)
+
+fun GameDetails.toEntity(): GameDetailsEntity = GameDetailsEntity(
+    id = id,
+    name = name,
+    imageUrl = imageUrl,
+    rating = rating,
+    releaseDate = releaseDate,
+    description = description,
+    metacritic = metacritic,
+    genres = genres.joinToString(","),
+    screenshots = screenshots.joinToString(","),
+    trailerUrl = trailerUrl
+)
+
+fun GameDetailsEntity.toDomainDetails(): GameDetails = GameDetails(
+    id = id,
+    name = name,
+    imageUrl = imageUrl,
+    rating = rating,
+    releaseDate = releaseDate,
+    description = description,
+    metacritic = metacritic,
+    genres = genres.split(",").filter { it.isNotBlank() },
+    screenshots = screenshots.split(",").filter { it.isNotBlank() },
+    trailerUrl = trailerUrl
 )

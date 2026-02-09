@@ -1,0 +1,7 @@
+<resources>
+    <style name="Theme.Game.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/game_icon_circle_preview</item>
+        <item name="postSplashScreenTheme">@style/Theme.Game</item>
+    </style>
+</resources>

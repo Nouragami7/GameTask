@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.dagger.hilt.android")
+    kotlin("plugin.serialization")
     kotlin("kapt")
 }
 
@@ -58,14 +59,15 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation("androidx.compose.material:material-icons-extended")
+    implementation("androidx.core:core-splashscreen:1.0.1")
 
     // Lifecycle + ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
 
     // Navigation
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-
+    implementation("androidx.navigation:navigation-compose:2.8.5")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     //  Networking (Retrofit)
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")

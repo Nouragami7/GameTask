@@ -8,6 +8,6 @@ class GetGamesByGenreUseCase @Inject constructor(
     private val repository: GamesRepository
 ) {
     suspend operator fun invoke(genre: String, page: Int): Result<List<Game>> {
-        return repository.getGames(genre, page)
+        return repository.getGamesByGenre(genre, page)
     }
 }

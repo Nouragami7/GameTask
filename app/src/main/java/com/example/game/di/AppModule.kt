@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.game.BuildConfig
 import com.example.game.data.local.dao.GamesDao
-import com.example.game.data.local.db.GamesDatabase
+import com.example.game.data.local.database.GamesDatabase
 import com.example.game.data.remote.api.GameApiService
 import dagger.Module
 import dagger.Provides
@@ -18,6 +18,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import kotlin.jvm.java
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -70,17 +71,18 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGamesDatabase(@ApplicationContext context: Context): GamesDatabase {
-        return Room.databaseBuilder(
-            context,
-            GamesDatabase::class.java,
-            "games_database"
-        ).build()
+    fun provideGamesDao(database: GamesDatabase): GamesDao {
+        return database.gamesDao()
     }
 
     @Provides
     @Singleton
-    fun provideGamesDao(database: GamesDatabase): GamesDao {
-        return database.gamesDao()
+    fun provideDatabase(@ApplicationContext context: Context): GamesDatabase {
+        return Room.databaseBuilder(
+            context,
+            GamesDatabase::class.java,
+            "games_db"
+        ).fallbackToDestructiveMigration()
+            .build()
     }
 }
