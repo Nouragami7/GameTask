@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -19,8 +21,8 @@ android {
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val rawgApiKey: String = project.findProperty("RAWG_API_KEY")?.toString() ?: ""
-        buildConfigField("String", "RAWG_API_KEY", "\"$rawgApiKey\"")
+        val localProperties = gradleLocalProperties(rootDir, providers)
+        buildConfigField("String", "API_KEY", "\"${localProperties.getProperty("RAWG_API_KEY")}\"")
     }
 
     buildFeatures {

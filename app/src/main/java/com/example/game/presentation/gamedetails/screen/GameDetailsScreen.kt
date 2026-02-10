@@ -245,6 +245,7 @@ private fun GameDetailsContent(
                 Text(
                     text = stringResource(R.string.section_about),
                     style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
@@ -283,6 +284,7 @@ private fun GameDetailsContent(
                     Text(
                         text = stringResource(R.string.trailer_title),
                         style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
@@ -343,6 +345,7 @@ private fun GameDetailsContent(
                     Text(
                         text = stringResource(R.string.section_screenshots),
                         style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                     )
